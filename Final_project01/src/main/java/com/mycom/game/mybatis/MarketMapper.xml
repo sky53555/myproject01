@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market">
+		<select id="getList" resultType="marketDto">
+		SELECT num, name, price, remainCount
+		FROM shop
+		ORDER BY num ASC
+	</select>
+	
+	<select id="getPrice" parameterType="int" 
+		resultType="int">
+		SELECT price
+		FROM shop
+		WHERE num=#{num}	
+	</select>
+	
+	<update id="minusMoney" parameterType="marketDto">
+		UPDATE client_account
+		SET money=money-#{price}
+		WHERE id=#{id}
+	</update>
+	
+	<update id="plusPoint" parameterType="marketDto">
+		UPDATE client_account
+		SET point=point + #{price}*0.1
+		WHERE id=#{id}
+	</update>
+	
+	<update id="minusCount" parameterType="int">
+		UPDATE shop
+		SET remainCount=remainCount-1
+		WHERE num=#{num}
+	</update>
+	
+	<insert id="addOrder" parameterType="orderDto">
+		INSERT INTO client_order
+		(num, id, code, addr)
+		VALUES(client_order_seq.NEXTVAL, #{id}, #{code}, #{addr})
+	</insert>
+	
+	<!-- 수정필요 -->
+	<insert id="insert" parameterType="marketDto">
+		INSERT INTO board_file
+		(num,writer,title,content,downCount,orgFileName,saveFileName,
+			fileSize,regdate)
+		VALUES(board_file_seq.NEXTVAL,#{writer},#{title},#{content},
+		#{downCount}, #{orgFileName}, #{saveFileName}, #{fileSize},
+			SYSDATE)
+	</insert>
+</mapper>
