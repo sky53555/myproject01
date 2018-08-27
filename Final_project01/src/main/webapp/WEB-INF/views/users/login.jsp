@@ -23,16 +23,7 @@
 		<c:when test="${isLoginSuccess }">
 			<p>환영합니다!</p>
 			<h3 class="text-center"> <strong>${id }</strong> 님 로그인 되었습니다.</h3>
-			<p>3초후 페이지 이동</p>
-			<script>
-				function window_onload(){
-				    setTimeout('go_url()',3000)  // 3초후 go_url() 함수를 호출한다.
-				 }
-				 function go_url(){
-				    location.href=""  // 페이지 이동...
-				 }
-				 window_onload();
-			</script>
+			<a href="loginform.do?url=${url }">확인</a>
 		</c:when>
 		<c:otherwise>
 			<p> 아이디 혹은 비밀번호가 틀려요.</p>

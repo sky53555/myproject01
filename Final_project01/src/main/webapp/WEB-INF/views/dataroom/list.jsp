@@ -52,7 +52,9 @@
 .icon i{
 	padding-top:13px;
 }
-
+p{
+ margin:15px;
+}
 </style>
 </head>
 <body>
@@ -69,18 +71,25 @@
 	
 	</header>
 	
-	<div class="custom-select" style="width:200px;">
-
-		<select>
-		    <option value="0">제목+내용</option>
-		    <option value="1">제목</option>
-		    <option value="2">내용</option>
-		    <option value="3">작성자</option>
+	<!-- keyword 검색어 form -->
+	<form action="list.do" method="post">
+		<select name="condition" id="condition" style="padding:5px;float:left;">
+			<option value="titlecontent" <c:if test="${condition eq 'titlecontent' }">selected</c:if>>제목+내용</option>
+			<option value="title" style="padding-bottom:5px;" <c:if test="${condition eq 'title' }">selected</c:if>>제목</option>
+			<option value="writer" style="padding-bottom:5px;" <c:if test="${condition eq 'writer' }">selected</c:if>>작성자</option>
 		</select>
-		<input type="text" placeholder="Search.." name="search">
-	  	<button type="submit"><i class="fa fa-search"></i></button>
-
-	</div>
+		<input value="${keyword }" type="text" name="keyword" style="padding:3px;" placeholder="검색어..." />
+		<button type="submit" style="padding:3px;border-radius:5px;"><i class="fas fa-search"></i></button>
+	</form>
+	<c:choose>
+		<c:when test="${not empty keyword }">
+			<p><strong>${keyword }</strong> 검색어로 검색된 
+			<strong>${totalRow }</strong>개의 글이 있습니다.</p>
+		</c:when>
+		<c:otherwise>
+			<p><strong>${totalRow }</strong>개의 글이 있습니다.</p>
+		</c:otherwise>
+	</c:choose>	
 	
 	<c:forEach var="tmp" items="${list }">
 		
@@ -112,19 +121,28 @@
 	<!-- 페이징 처리 -->
 	<div class="container" style="margin-left:35%;">
 		<ul class="pagination">
-			
-			<c:if test="${startPageNum eq 1 }">
-				<li class="disabled">
-					<a href="list.do?pageNum=${startPageNum}"><i class="fas fa-angle-double-left"></i></a>
-				</li>
-				<li class="disabled">
-					<a href="javascript:"><i class="fas fa-angle-left"></i></a>
-				</li>
-			</c:if>
 		
 			
-			<c:forEach var="i" begin="${startPageNum }"
-				end="${endPageNum }">
+			<c:choose>
+				<c:when test="${startPageNum eq firstPageNum }">
+					<li class="disabled">
+						<a href="list.do?pageNum=${firstPageNum}"><i class="fas fa-angle-double-left"></i></a>
+					</li>
+					<li class="disabled">
+						<a href="javascript:"><i class="fas fa-angle-left"></i></a>
+					</li>
+				</c:when>
+				<c:when test="${pageNum gt firstPageNum}">
+					<li>
+						<a href="list.do?pageNum=${firstPageNum}"><i class="fas fa-angle-double-left"></i></a>
+					</li>
+					<li>
+						<a href="list.do?pageNum=${pageNum-1}"><i class="fas fa-angle-left"></i></a>
+					</li>
+				</c:when>
+			</c:choose>
+			
+			<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }">
 				
 				<c:choose>
 					<c:when test="${i eq pageNum }">
@@ -140,15 +158,25 @@
 				</c:choose>
 			</c:forEach>
 				
-			
-			<c:if test="${endPageNum eq totalPageCount}">
-				<li class="disabled">
-					<a href="javascript:"><i class="fas fa-angle-right"></i></a>
-				</li>
-				<li class="disabled">
-					<a href="list.do?pageNum=${totalPageCount}"><i class="fas fa-angle-double-right"></i></a>
-				</li>
-			</c:if>
+			<c:choose>
+					<c:when test="${endPageNum eq totalPageCount}">
+						<li class="disabled">
+							<a href="javascript:"><i class="fas fa-angle-right"></i></a>
+						</li>
+						<li class="disabled">
+							<a href="list.do?pageNum=${totalPageCount}"><i class="fas fa-angle-double-right"></i></a>
+						</li>
+					</c:when>
+					<c:when test="${pageNum le totalPageCount}">
+						<li>
+							<a href="list.do?pageNum=${pageNum+1}"><i class="fas fa-angle-right"></i></a>
+						</li>
+						<li>
+							<a href="list.do?pageNum=${totalPageCount}"><i class="fas fa-angle-double-right"></i></a>
+						</li>
+					</c:when>
+				</c:choose>
+		
 		</ul>
 		
 	</div>
@@ -164,10 +192,6 @@
 			location.href="delete.do?num="+num;
 		}
 	}
-	
-
-	
-
 	
 </script>
 </body>

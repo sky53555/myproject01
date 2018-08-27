@@ -97,8 +97,12 @@ button{
 
 <%@include file="../footer.jsp" %>
 
-<script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>	
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
+
+
 <script>
+
+
 
 	//폼의 유효성 여부
 	var formValid=false;

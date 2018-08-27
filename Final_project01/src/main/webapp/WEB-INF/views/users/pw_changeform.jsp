@@ -6,25 +6,60 @@
 <head>
 <meta charset="UTF-8">
 <title>user/pw_updateform.jsp</title>
+<%@include file="../css_loading.jsp" %>
+<style>
+.list{
+	width:60%;
+	margin-top:10%;
+	}
+p{
+	padding-bottom:20px;
+	font-size:15px;
+}
+button{
+	margin-top:20px;	
+}
+</style>
 </head>
 <body>
-<h3>비밀번호 변경</h3>
-<p>현재 비밀번호를 입력한 후 새로 사용될 비밀번호를 입력하세요.</p>
-<form action="pw_update.do" method="post" id="myForm">
-	<label for="currentPwd">현재 비밀번호</label>
-	<input type="password" name="currentPwd" id="currentPwd" />
-	<span id="currentCheck"></span>
-	<br />
-	<label for="pwd">새 비밀번호</label>
-	<input type="password" name="pwd" id="pwd" />
-	<span id="pwdCheck"></span>
-	<br />
-	<label for="pwd2">새 비밀번호 확인</label>
-	<input type="password" name="pwd2" id="pwd2" />
-	<br />
-	<button type="submit">확인</button>
-	<button type="reset">취소</button>
-</form>
+<%@include file="../header.jsp" %>
+
+<div class="container list">
+	<header class="page-header">
+	<h1 class="page-title">비밀번호 변경</h1>
+	</header>
+	<p>현재 비밀번호를 입력한 후 새로 사용될 비밀번호를 입력하세요.</p>
+	<form action="pw_update.do" method="post" id="myForm">
+	
+	  <div class="form-group row">
+		<label class="col-sm-2 col-form-label text-right" for="currentPwd">현재 비밀번호</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="password" name="currentPwd" id="currentPwd"/>
+			<span id="currentCheck"></span>
+		</div>
+	  </div>
+	  
+	   <div class="form-group row">
+		<label class="col-sm-2 col-form-label text-right" for="pwd">새 비밀번호</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="password" name="pwd" id="pwd"/>
+			<span id="pwdCheck"></span>
+		</div>
+	  </div>
+	  
+	  <div class="form-group row">
+		<label class="col-sm-2 col-form-label text-right" for="pwd2">새 비밀번호</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="password" name="pwd2" id="pwd2"/>
+			<span id="pwdCheck"></span>
+		</div>
+	  </div>
+
+		<button type="submit" class="btn">확인</button>
+		<button type="reset" class="btn">취소</button>
+	</form>
+</div>
+<%@include file="../footer.jsp" %>
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
 <script>
 	//현재 비밀번호와 새로운 비밀번호의 유효성 여부

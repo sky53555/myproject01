@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.mycom.game.data.dao.DataDao;
 import com.mycom.game.data.dto.DataDto;
 import com.mycom.game.exception.ForbiddenException;
@@ -18,7 +17,7 @@ import com.mycom.game.exception.ForbiddenException;
 public class DataServiceImpl implements DataService {
 	
 	//한 페이지에 나타낼 로우의 갯수
-	private static final int PAGE_ROW_COUNT=5;
+	private static final int PAGE_ROW_COUNT=3;
 	//하단 디스플레이 페이지 갯수
 	private static final int PAGE_DISPLAY_COUNT=3;	
 	
@@ -26,8 +25,35 @@ public class DataServiceImpl implements DataService {
 	private DataDao dataDao;
 
 	@Override
-	public void getList(ModelAndView mView, int pageNum) {
+	public void getList(HttpServletRequest request) {
 		
+		String keyword=request.getParameter("keyword");
+		String condition=request.getParameter("condition");		
+		
+		//CafeDto 객체를 생성해서 
+		DataDto dto=new DataDto();
+		if(keyword != null) {//검색어가 전달된 경우 
+			if(condition.equals("titlecontent")) {//제목+내용 검색
+				dto.setTitle(keyword);
+				dto.setContent(keyword);
+			}else if(condition.equals("title")) {//제목 검색
+				dto.setTitle(keyword);
+			}else if(condition.equals("writer")) {//작성자 검색
+				dto.setWriter(keyword);
+			}
+			//list.jsp 에서 필요한 내용 담기
+			request.setAttribute("condition", condition);
+			request.setAttribute("keyword", keyword);
+		}
+		
+		//보여줄 페이지의 번호
+		int pageNum=1;
+		//보여줄 페이지의 번호가 파라미터로 전달되는지 읽어온다.
+		String strPageNum=request.getParameter("pageNum");
+		if(strPageNum != null){//페이지 번호가 파라미터로 넘어온다면
+			//페이지 번호를 설정한다.
+			pageNum=Integer.parseInt(strPageNum);
+		}
 		//보여줄 페이지 데이터의 시작 ResultSet row 번호
 		int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
 		//보여줄 페이지 데이터의 끝 ResultSet row 번호
@@ -48,20 +74,20 @@ public class DataServiceImpl implements DataService {
 			endPageNum=totalPageCount; //보정해준다. 
 		}
 		
-	
-		DataDto dto=new DataDto();
 		dto.setStartRowNum(startRowNum);
 		dto.setEndRowNum(endRowNum);
 		
 	
 		List<DataDto> list=dataDao.getList(dto);
 		
-		mView.addObject("list",list);
-		mView.addObject("pageNum", pageNum);
-		mView.addObject("startPageNum", startPageNum);
-		mView.addObject("endPageNum", endPageNum);
-		mView.addObject("totalPageCount", totalPageCount);
-
+		int firstPageNum=1;
+		request.setAttribute("list",list);
+		request.setAttribute("pageNum", pageNum);
+		request.setAttribute("firstPageNum", firstPageNum);
+		request.setAttribute("startPageNum", startPageNum);
+		request.setAttribute("endPageNum", endPageNum);
+		request.setAttribute("totalPageCount", totalPageCount);
+		request.setAttribute("totalRow", totalRow);	
 	}
 
 	@Override
@@ -144,7 +170,7 @@ public class DataServiceImpl implements DataService {
 				.getServletContext().getRealPath("/upload");
 		
 		int num=Integer.parseInt(request.getParameter("num"));
-		String writer=request.getParameter("id");
+		String writer=request.getParameter("writer");
 		String title=request.getParameter("title");
 		String content=request.getParameter("content");
 		

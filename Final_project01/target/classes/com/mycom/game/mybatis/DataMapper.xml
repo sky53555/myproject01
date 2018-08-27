@@ -15,7 +15,7 @@
 	
 	<update id="update" parameterType="dataDto">
 		UPDATE board_file
-		SET num=#{num},writer=#{writer},title=#{title},content=#{content},regdate=SYSDATE,
+		SET num=#{num},writer=#{writer},title=#{title},content=#{content},regdate=SYSDATE
 		<if test="saveFileName != null">
 		orgFileName=#{orgFileName},saveFileName=#{saveFileName},
 		fileSize=#{fileSize}
@@ -38,6 +38,7 @@
 		#{downCount}, #{orgFileName}, #{saveFileName}, #{fileSize},
 			SYSDATE)
 	</insert>
+
 	
 	<select id="getList" parameterType="dataDto"
 		resultType="dataDto">
@@ -45,14 +46,37 @@
 		FROM (SELECT result1.*, ROWNUM rnum
 			  FROM ( SELECT <include refid="dataColumn"/>
 					FROM board_file
+					<where>
+						<if test="writer != null">
+							OR writer LIKE '%'||#{writer}||'%'
+						</if>
+						<if test="title != null">
+							OR title LIKE '%'||#{title}||'%'
+						</if>
+						<if test="content !=null">
+							OR content LIKE '%'||#{content}||'%'
+						</if>
+					</where>
 					ORDER BY num DESC ) result1
 			  )
 		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum}
 	</select>
 	
-	<select id="getCount" resultType="int">
-		SELECT NVL(MAX(ROWNUM), 0) 
+	
+	<select id="getCount" parameterType="dataDto" resultType="int">
+		SELECT NVL(MAX(ROWNUM), 0)
 		FROM board_file
+		<where>
+			<if test="writer != null">
+				OR writer LIKE '%'||#{writer}||'%'
+			</if>
+			<if test="title != null">
+				OR title LIKE '%'||#{title}||'%'
+			</if>
+			<if test="content !=null">
+				OR content LIKE '%'||#{content}||'%'
+			</if>
+		</where>
 	</select>
 </mapper>
 

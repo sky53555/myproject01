@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,10 +18,9 @@ public class DataController {
 	private DataService dataService;
 	
 	@RequestMapping("/dataroom/list")
-	public ModelAndView list(ModelAndView mView,
-			@RequestParam(defaultValue="1") int pageNum) {
+	public ModelAndView list(ModelAndView mView, HttpServletRequest request) {
 		
-		dataService.getList(mView, pageNum);
+		dataService.getList(request);
 		mView.setViewName("dataroom/list");
 		return mView;
 	}

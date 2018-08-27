@@ -83,6 +83,7 @@
     </form>
   </div>
 </div>
+<%@include file="../footer.jsp" %>
 <script>
 var oEditors = [];
 //추가 글꼴 목록
@@ -106,14 +107,7 @@ nhn.husky.EZCreator.createInIFrame({
 	},
 	fCreator: "createSEditor2"
 });
-function pasteHTML() {
-	var sHTML = "<span style='color:#FF0000;'>이미지도 같은 방식으로 삽입합니다.<\/span>";
-	oEditors.getById["content"].exec("PASTE_HTML", [sHTML]);
-}
-function showHTML() {
-	var sHTML = oEditors.getById["content"].getIR();
-	alert(sHTML);
-}
+
 	
 function submitContents(elClickedObj) {
 	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
@@ -130,6 +124,6 @@ function setDefaultFont() {
 	oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
 }
 </script>
-<%@include file="../footer.jsp" %>
+
 </body>
 </html>

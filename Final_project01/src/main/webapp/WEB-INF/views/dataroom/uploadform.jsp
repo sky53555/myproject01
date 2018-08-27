@@ -12,12 +12,9 @@
 
 .list{
 	margin-top:10%;
+	width:60%;
 }
-.bootstrap-form form {
-  max-width: 700px;
-  margin: auto;
-  padding: 0;
-}
+
 .bootstrap-form .form-group input,
 .bootstrap-form .form-group label,
 .bootstrap-form .form-group textarea {
@@ -29,8 +26,9 @@
 <body>
 <%@include file="../header.jsp" %>
 
-<div class="bootstrap-form list">
-  <div class="container">
+<div class="container list">
+
+  <div class="bootstrap-form">
     <form action="upload.do" method="post" 
 				enctype="multipart/form-data">
 				
@@ -57,20 +55,21 @@
       <div class="form-group row">
         <label class="col-sm-2 col-form-label text-right" for="content">Content</label>
         <div class="col-sm-10">
-          <textarea id="content" name="content"></textarea>
-          <textarea class="form-control" rows="5" name="content" id="content" 
-		style="width:766px;height:412px;display:none"></textarea>
-		
+     		<textarea name="content" id="content" 
+				style="width:100%;height:412px;display:none"></textarea>
+
         </div>
       </div>
       <div class="form-group row">
         <div class="col-sm-12 text-right">
-          <input class="btn btn-primary" onclick="submitContents(this);" type="button" value="Send"/>
+          <input class="btn btn-primary" type="button" onclick="submitContents(this);" value="Send"/>
         </div>
       </div>
     </form>
   </div>
 </div>
+<%@include file="../footer.jsp" %>
+
 <script>
 var oEditors = [];
 //추가 글꼴 목록
@@ -117,7 +116,9 @@ function setDefaultFont() {
 	var nFontSize = 24;
 	oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
 }
+
 </script>
-<%@include file="../footer.jsp" %>
+
+
 </body>
 </html>

@@ -32,7 +32,7 @@
 				<p class="text-center text-muted">아직 가입하지 않으셨나요? <a href="signup_form.do">가입하러 가기</a></p>
 				<hr>
 				
-				<form action="login.do?url=${url }" method="post">
+				<form action="login.do?url=${url }" method="post" id="myForm">
 					<div class="top-margin">
 						<label for="id">ID <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" name="id" id="id">
@@ -65,10 +65,13 @@
 </article>
 </div>
 <!-- /Article -->
+<%@include file="../footer.jsp" %>
+
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 
 <script>
 
+	
 $(document).ready(function(){
     // 저장된 쿠키값을 가져와서 ID 칸에 넣어준다. 없으면 공백으로 들어감.
     var userInputId = getCookie("userInputId");
@@ -124,8 +127,5 @@ function getCookie(cookieName) {
 }
 </script>
 
-
-
-<%@include file="../footer.jsp" %>
 </body>
 </html>
